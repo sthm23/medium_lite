@@ -16,7 +16,7 @@ export class UsersService {
       where: {email: userDto.email}
     });
     if(excitingUser) throw new ForbiddenException('User already with this email excited!')
-    const password = await bcrypt.hash(userDto.password, process.env.CRYPT_SALT);
+    const password = await bcrypt.hash(userDto.password, +process.env.CRYPT_SALT);
     const user = await this.prisma.user.create({
       data: {
         name: userDto.name,

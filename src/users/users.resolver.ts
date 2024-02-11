@@ -21,9 +21,7 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll(
-    @Context() ctx:any
-  ) {
+  findAll() {
     return this.usersService.findAll();
   }
 

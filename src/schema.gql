@@ -27,6 +27,7 @@ type Mutation {
   logout: Boolean!
   refreshToken(refreshInput: RefreshInput!): RefreshTokenResponse!
   removeUser(id: Int!): User!
+  signup(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
