@@ -5,7 +5,8 @@ import { LocalStrategy } from './strategy/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from 'src/users/users.module';
-import { GqlAuthGuard } from './guard/auth.guard';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { RefreshJwtStrategy } from './strategy/jwt-refreesh.strategy';
 
 @Module({
   imports: [
@@ -13,11 +14,11 @@ import { GqlAuthGuard } from './guard/auth.guard';
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET,
       signOptions: {
-
+        expiresIn: process.env.JWT_ACCESS_EXPIRE
       }
     }),
     UsersModule,
   ],
-  providers: [AuthService, AuthResolver, LocalStrategy, GqlAuthGuard]
+  providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy, RefreshJwtStrategy]
 })
-export class AuthModule {}
+export class AuthModule { }

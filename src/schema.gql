@@ -24,6 +24,8 @@ type LoginResponse {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   login(loginInput: LoginInput!): LoginResponse!
+  logout: Boolean!
+  refreshToken(refreshInput: RefreshInput!): RefreshTokenResponse!
   removeUser(id: Int!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
@@ -31,6 +33,14 @@ type Mutation {
 type Query {
   user(id: Int!): User!
   users: [User!]!
+}
+
+input RefreshInput {
+  refreshToken: String!
+}
+
+type RefreshTokenResponse {
+  accessToken: String!
 }
 
 enum Role {
