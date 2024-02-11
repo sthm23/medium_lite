@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from 'prisma/prisma.service';
@@ -10,24 +10,69 @@ export class UsersService {
     private readonly prisma: PrismaService
   ) {}
 
-
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  async create(userDto: CreateUserInput) {
+    const excitingUser = await this.prisma.user.findUnique({
+      where: {email: userDto.email}
+    });
+    if(excitingUser) throw new ForbiddenException('User already with this email excited!')
+    const user = await this.prisma.user.create({
+      data: {
+        name: userDto.name,
+        email: userDto.email,
+        password: userDto.password,
+        role: userDto.role,
+      }
+    })
+    return user
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {id: id}
+    });
+    if(!user) throw new NotFoundException('User not found');
+    return user
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async findOneByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {email: email}
+    });
+    if(!user) throw new NotFoundException('User not found');
+    return user
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(id: number, updateUserInput: UpdateUserInput) {
+    const excitingUser = await this.prisma.user.findUnique({
+      where: {id: id}
+    });
+    if(!excitingUser) throw new NotFoundException('User not found')
+    const user = await this.prisma.user.update({
+      where: {id},
+      data: {
+        name: updateUserInput?.name ? updateUserInput.name : excitingUser.name,
+        email: updateUserInput?.email ? updateUserInput.email : excitingUser.email,
+        role: updateUserInput?.role ? updateUserInput.role : excitingUser.role,
+      }
+    })
+
+    return user
+  }
+
+  async remove(id: number) {
+    const excitingUser = await this.prisma.user.findUnique({
+      where: {id: id}
+    });
+    if(!excitingUser) throw new NotFoundException('User not found');
+    const res = await this.prisma.user.delete({
+      where: {id}
+    })
+    return {
+      message: `User ${res.email} has been removed`
+    }
   }
 }
