@@ -4,14 +4,26 @@
 
 input CreateUserInput {
   email: String!
-  id: Int!
   name: String!
   password: String!
   role: Role!
 }
 
+input LoginInput {
+  email: String!
+  passport: String!
+}
+
+type LoginResponse {
+  accessToken: String!
+  refreshToken: String!
+  role: Role!
+  userId: Float!
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+  login(loginInput: LoginInput!): LoginResponse!
   removeUser(id: Int!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }

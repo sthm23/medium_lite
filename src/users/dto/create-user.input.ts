@@ -3,8 +3,6 @@ import { RoleEnum } from '../entities/user.entity';
 
 @InputType()
 export class CreateUserInput {
-  @Field(()=>Int)
-  id: number;
 
   @Field()
   name: string;
