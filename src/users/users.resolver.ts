@@ -1,12 +1,17 @@
 import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { RoleEnum, User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { Roles } from 'src/auth/guard/roles.decorator';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 
 @Resolver(() => User)
+@UseGuards(RolesGuard)
+@Roles(RoleEnum.ADMIN)
+@UseGuards(JwtGuard)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
@@ -15,13 +20,10 @@ export class UsersResolver {
     return this.usersService.create(createUserInput);
   }
 
-  @UseGuards(JwtGuard)
   @Query(() => [User], { name: 'users' })
   findAll(
     @Context() ctx:any
   ) {
-    // console.log(ctx.req.user);
-    
     return this.usersService.findAll();
   }
 
