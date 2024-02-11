@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreatePostInput {
+  content: String!
+  title: String!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -22,6 +27,7 @@ type LoginResponse {
 }
 
 type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
   createUser(createUserInput: CreateUserInput!): User!
   login(loginInput: LoginInput!): LoginResponse!
   logout: Boolean!
@@ -31,7 +37,16 @@ type Mutation {
   updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
+type Post {
+  author: User!
+  content: String!
+  id: Int!
+  title: String!
+  viewers: [User!]
+}
+
 type Query {
+  post(id: Int!): Post!
   user(id: Int!): User!
   users: [User!]!
 }
@@ -62,5 +77,7 @@ type User {
   id: Int!
   name: String!
   password: String!
+  posts: [Post!]
   role: Role!
+  viewedPosts: [Post!]
 }

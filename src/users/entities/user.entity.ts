@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
+import { Post } from 'src/post/entities/post.entity';
 
 
 export enum RoleEnum {
@@ -27,9 +28,9 @@ export class User {
   @Field(() => RoleEnum)
   role: RoleEnum;
 
-  // @Field({nullable: true})
-  // posts: Post[];
+  @Field(()=>[Post], {nullable: true})
+  posts?: Post[];
 
-  // @Field({nullable: true})
-  // viewedPosts: Post[];
+  @Field(()=>[Post], {nullable: true})
+  viewedPosts?: Post[];
 }
