@@ -11,7 +11,7 @@ input CreateUserInput {
 
 input LoginInput {
   email: String!
-  passport: String!
+  password: String!
 }
 
 type LoginResponse {
