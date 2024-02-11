@@ -2,6 +2,7 @@ import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/commo
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from 'prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,11 +16,12 @@ export class UsersService {
       where: {email: userDto.email}
     });
     if(excitingUser) throw new ForbiddenException('User already with this email excited!')
+    const password = await bcrypt.hash(userDto.password, process.env.CRYPT_SALT);
     const user = await this.prisma.user.create({
       data: {
         name: userDto.name,
         email: userDto.email,
-        password: userDto.password,
+        password: password,
         role: userDto.role,
       }
     })
