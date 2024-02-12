@@ -8,24 +8,24 @@ import { CreateUserInput } from 'src/users/dto/create-user.input';
 
 @Injectable()
 export class AuthService {
-    
+
     constructor(
         private userServ: UsersService,
         private jwtService: JwtService
-    ) {}
+    ) { }
 
 
-    async validateUser(email:string, password:string) {
+    async validateUser(email: string, password: string) {
         const user = await this.userServ.findOneByEmail(email);
         const checkPassword = await bcrypt.compare(password, user.password)
-        if(user && checkPassword) {
+        if (user && checkPassword) {
             return user
         }
         return null
     }
 
-    async login(user:User) {
-        const token = await this.getTokens(user.id, user.email,user.role);
+    async login(user: User) {
+        const token = await this.getTokens(user.id, user.email, user.role);
 
         return {
             accessToken: token.accessToken,
@@ -39,7 +39,7 @@ export class AuthService {
         return await this.userServ.create(body);
     }
 
-    async getTokens(id:number, email:string, role:'ADMIN'|'USER') {
+    async getTokens(id: number, email: string, role: 'ADMIN' | 'USER') {
         const [at, rt] = await Promise.all([
             this.jwtService.sign({
                 userId: id,
@@ -50,15 +50,15 @@ export class AuthService {
                 expiresIn: process.env.JWT_ACCESS_EXPIRE,
             }),
             this.jwtService.sign({
-              userId: id,
-              email: email,
-              role: role
+                userId: id,
+                email: email,
+                role: role
             }, {
                 secret: process.env.JWT_REFRESH_SECRET,
                 expiresIn: process.env.JWT_REFRESH_EXPIRE,
             })
         ]);
-    
+
         return {
             userId: id,
             email: email,
@@ -68,7 +68,7 @@ export class AuthService {
         }
     }
 
-    getAccessToken(id:number, email:string, role:'ADMIN'|'USER') {
+    getAccessToken(id: number, email: string, role: 'ADMIN' | 'USER') {
         const token = this.jwtService.sign({
             userId: id,
             email: email,
@@ -83,12 +83,12 @@ export class AuthService {
         }
     }
 
-    refreshToken(body: {refreshToken:string}, user:User) {
-        const access = this.getAccessToken(user.id, user.email,user.role)
-        return {...access, ...body}
+    refreshToken(body: { refreshToken: string }, user: User) {
+        const access = this.getAccessToken(user.id, user.email, user.role)
+        return { ...access, ...body }
     }
 
-    logOut(user:User) {
+    logOut(user: User) {
         return true
     }
 

@@ -6,16 +6,16 @@ import { PrismaService } from 'prisma/prisma.service';
 @Injectable()
 export class PostService {
 
-  constructor(private prisma:PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
 
-  async create(body: CreatePostInput, user:JwtPayload) {
+  async create(body: CreatePostInput, user: JwtPayload) {
     const post = await this.prisma.post.create({
       data: {
         content: body.content,
         title: body.title,
         author: {
-          connect:{
+          connect: {
             id: user.userId
           }
         }
@@ -28,29 +28,33 @@ export class PostService {
     return this.prisma.post.findMany({
       include: {
         author: true,
-        viewers: {include: {
-          user: true
-        }}
+        viewers: {
+          include: {
+            user: true
+          }
+        }
       },
     });
   }
 
-  async findOne(id: number, user:JwtPayload) {
+  async findOne(id: number, user: JwtPayload) {
     const post = await this.prisma.post.findUnique({
-      where: {id},
+      where: { id },
       include: {
         author: true,
-        viewers: {include: {
-          user: true
-        }}
+        viewers: {
+          include: {
+            user: true
+          }
+        }
       },
     });
 
-    if(!post) throw new NotFoundException('Post not founded!')
+    if (!post) throw new NotFoundException('Post not founded!')
     await this.markPostAsViewed(user.userId, id)
     return post
   }
-  
+
   async markPostAsViewed(userId: number, postId: number) {
     const viewedPost = await this.prisma.userViewedPost.findFirst({
       where: {
@@ -58,7 +62,7 @@ export class PostService {
         postId,
       }
     })
-    if(viewedPost){
+    if (viewedPost) {
       return viewedPost
     }
     return await this.prisma.userViewedPost.create({
