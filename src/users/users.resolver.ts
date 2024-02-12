@@ -6,6 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { Roles } from 'src/auth/guard/roles.decorator';
 import { RolesGuard } from 'src/auth/guard/role.guard';
+import { OffsetPaginationArgs } from './dto/offset-pagination.dto';
 
 @Resolver(() => User)
 @UseGuards(RolesGuard)
@@ -20,8 +21,10 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Args() args: OffsetPaginationArgs
+  ) {
+    return this.usersService.findAll(args);
   }
 
   @Query(() => User, { name: 'user' })

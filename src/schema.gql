@@ -48,7 +48,7 @@ type Query {
   post(id: Int!): Post!
   posts: [Post!]!
   user(id: Int!): User!
-  users: [User!]!
+  users(limit: Int! = 3, offset: Int! = 0): [User!]!
 }
 
 input RefreshInput {
@@ -57,6 +57,7 @@ input RefreshInput {
 
 type RefreshTokenResponse {
   accessToken: String!
+  refreshToken: String!
 }
 
 enum Role {

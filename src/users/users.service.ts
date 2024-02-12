@@ -3,6 +3,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { OffsetPaginationArgs } from './dto/offset-pagination.dto';
 
 @Injectable()
 export class UsersService {
@@ -28,13 +29,30 @@ export class UsersService {
     return user
   }
 
-  async findAll() {
-    return this.prisma.user.findMany();
+  async findAll(args: OffsetPaginationArgs) {
+    return this.prisma.user.findMany({
+      take: args.limit,
+      skip: args.offset,
+      include: {
+        viewedPosts: {
+          include: {
+            post: true
+          }
+        }
+      }
+    });
   }
 
   async findOne(id: number) {
     const user = await this.prisma.user.findUnique({
-      where: {id: id}
+      where: {id: id},
+      include: {
+        viewedPosts: {
+          include: {
+            post: true
+          }
+        }
+      }
     });
     if(!user) throw new NotFoundException('User not found');
     return user
