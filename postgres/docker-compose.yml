@@ -1,25 +1,8 @@
 version: '3.6'
 
 services:
-  node:
-    build: .
-    image: medium_lite_node
-    env_file:
-      - .env
-    restart: always
-    networks:
-      - my_network
-    ports:
-      - ${PORT}:${PORT}
-    depends_on:
-      - postgres
-    environment:
-      - PORT=${PORT}
-    volumes:
-      - ./:/medium_lite/app/src
-      - /medium_lite/app/src/node_modules
   postgres:
-    build: ./postgres/
+    build: .
     image: medium_lite_postgres
     networks:
     - my_network
