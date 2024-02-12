@@ -1,15 +1,12 @@
 import { ArgsType, Field, Int } from "@nestjs/graphql";
-import { Transform } from "class-transformer";
-import { IsOptional, Max, Min } from "class-validator";
+import { Max, Min } from "class-validator";
 
 
 @ArgsType()
 export class OffsetPaginationArgs {
-
   @Field((type) => Int)
   @Min(0)
   offset: number = 0;
-
 
   @Field((type) => Int)
   @Min(1)
