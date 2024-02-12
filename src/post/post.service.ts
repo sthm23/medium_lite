@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
 import { JwtPayload } from 'src/auth/auth.interface';
 import { PrismaService } from 'prisma/prisma.service';
+import { CursorPaginationArgs } from './dto/cursore-pagination.dto';
 
 @Injectable()
 export class PostService {
@@ -24,8 +25,13 @@ export class PostService {
     return post;
   }
 
-  async findAll() {
+  async findAll(args:CursorPaginationArgs) {
     return this.prisma.post.findMany({
+      take: args.limit,
+      skip: args.offset,
+      cursor: {
+        id: args.startingId
+      },
       include: {
         author: true,
         viewers: {

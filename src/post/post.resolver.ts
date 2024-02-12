@@ -2,11 +2,13 @@ import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { PostService } from './post.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { CursorPaginationArgs } from './dto/cursore-pagination.dto';
 
 @Resolver(() => Post)
 @UseGuards(JwtGuard)
+@UsePipes(new ValidationPipe())
 export class PostResolver {
   constructor(private readonly postService: PostService) { }
 
@@ -19,8 +21,10 @@ export class PostResolver {
   }
 
   @Query(() => [Post], { name: 'posts' })
-  findAll() {
-    return this.postService.findAll();
+  findAll(
+    @Args() args: CursorPaginationArgs
+  ) {
+    return this.postService.findAll(args);
   }
 
   @Query(() => Post, { name: 'post' })

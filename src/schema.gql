@@ -46,7 +46,7 @@ type Post {
 
 type Query {
   post(id: Int!): Post!
-  posts: [Post!]!
+  posts(limit: Int! = 3, offset: Int! = 0, startingId: Int = 1): [Post!]!
   user(id: Int!): User!
   users(limit: Int! = 3, offset: Int! = 0): [User!]!
 }
