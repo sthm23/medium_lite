@@ -4,7 +4,6 @@ import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
-// import { UpdatePostInput } from './dto/update-post.input';
 
 @Resolver(() => Post)
 @UseGuards(JwtGuard)
@@ -14,13 +13,12 @@ export class PostResolver {
   @Mutation(() => Post)
   createPost(
     @Args('createPostInput') createPostInput: CreatePostInput,
-    @Context() ctx:any
-  ) {
-
-    return this.postService.create(createPostInput, ctx.user);
+    @Context() context: any,
+  ) {    
+    return this.postService.create(createPostInput, context.req.user);
   }
 
-  @Query(() => [Post], { name: 'post' })
+  @Query(() => [Post], { name: 'posts' })
   findAll() {
     return this.postService.findAll();
   }
@@ -28,9 +26,9 @@ export class PostResolver {
   @Query(() => Post, { name: 'post' })
   findOne(
     @Args('id', { type: () => Int }) id: number,
-    @Context() ctx:any
-  ) {
-    return this.postService.findOne(id, ctx.user);
+    @Context() context: any,
+  ) {    
+    return this.postService.findOne(id, context.req.user);
   }
 
   // @Mutation(() => Post)

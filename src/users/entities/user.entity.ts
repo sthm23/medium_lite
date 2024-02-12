@@ -10,7 +10,18 @@ export enum RoleEnum {
 // Register enum type
 registerEnumType(RoleEnum, { name: 'Role' });
 
+@ObjectType()
+export class ViewedPosts {
+  @Field()
+  userId:number
 
+  @Field()
+  postId:number
+
+  @Field(()=>Post)
+  post: Post;
+
+}
 @ObjectType()
 export class User {
   @Field(() => Int)
@@ -31,6 +42,6 @@ export class User {
   @Field(()=>[Post], {nullable: true})
   posts?: Post[];
 
-  @Field(()=>[Post], {nullable: true})
-  viewedPosts?: Post[];
+  @Field(()=>[ViewedPosts], {nullable: true})
+  viewedPosts?: ViewedPosts[];
 }

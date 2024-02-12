@@ -2,6 +2,17 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
 
 @ObjectType()
+export class Viewers {
+  @Field()
+  userId:number
+
+  @Field()
+  postId:number
+
+  @Field(()=>User)
+  user: User;
+}
+@ObjectType()
 export class Post {
   @Field(() => Int)
   id: number;
@@ -15,6 +26,6 @@ export class Post {
   @Field(()=>User)
   author: User;
 
-  @Field(() => [User], {nullable: true})
-  viewers?: User[];
+  @Field(() => [Viewers], {nullable: true})
+  viewers?: Viewers[];
 }

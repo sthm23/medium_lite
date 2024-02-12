@@ -34,7 +34,6 @@ type Mutation {
   refreshToken(refreshInput: RefreshInput!): RefreshTokenResponse!
   removeUser(id: Int!): User!
   signup(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Post {
@@ -42,11 +41,12 @@ type Post {
   content: String!
   id: Int!
   title: String!
-  viewers: [User!]
+  viewers: [Viewers!]
 }
 
 type Query {
   post(id: Int!): Post!
+  posts: [Post!]!
   user(id: Int!): User!
   users: [User!]!
 }
@@ -64,14 +64,6 @@ enum Role {
   USER
 }
 
-input UpdateUserInput {
-  email: String
-  id: Int!
-  name: String
-  password: String
-  role: Role
-}
-
 type User {
   email: String!
   id: Int!
@@ -79,5 +71,17 @@ type User {
   password: String!
   posts: [Post!]
   role: Role!
-  viewedPosts: [Post!]
+  viewedPosts: [ViewedPosts!]
+}
+
+type ViewedPosts {
+  post: Post!
+  postId: Float!
+  userId: Float!
+}
+
+type Viewers {
+  postId: Float!
+  user: User!
+  userId: Float!
 }

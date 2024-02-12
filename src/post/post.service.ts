@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
-import { UpdatePostInput } from './dto/update-post.input';
 import { JwtPayload } from 'src/auth/auth.interface';
 import { PrismaService } from 'prisma/prisma.service';
 
@@ -26,30 +25,48 @@ export class PostService {
   }
 
   async findAll() {
-    return await this.prisma.post.findMany();
+    return this.prisma.post.findMany({
+      include: {
+        author: true,
+        viewers: {include: {
+          user: true
+        }}
+      },
+    });
   }
 
   async findOne(id: number, user:JwtPayload) {
     const post = await this.prisma.post.findUnique({
-      where: {id}
-    });
-
-    if(!post) throw new NotFoundException('Post not founded!')
-    await this.prisma.userViewedPost.create({
-      data: {
-        userId: user.userId,
-        postId: post.id,
+      where: {id},
+      include: {
+        author: true,
+        viewers: {include: {
+          user: true
+        }}
       },
     });
 
+    if(!post) throw new NotFoundException('Post not founded!')
+    await this.markPostAsViewed(user.userId, id)
     return post
   }
-
-  update(id: number, updatePostInput: UpdatePostInput) {
-    return `This action updates a #${id} post`;
+  
+  async markPostAsViewed(userId: number, postId: number) {
+    const viewedPost = await this.prisma.userViewedPost.findFirst({
+      where: {
+        userId,
+        postId,
+      }
+    })
+    if(viewedPost){
+      return viewedPost
+    }
+    return await this.prisma.userViewedPost.create({
+      data: {
+        user: { connect: { id: userId } },
+        post: { connect: { id: postId } }
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
-  }
 }
