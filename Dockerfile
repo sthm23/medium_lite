@@ -19,4 +19,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-CMD ["npm", "run", "start:dev"]
+# Generate Prisma client
+RUN npx prisma generate
+
+CMD ["npm", "run", "start"]
