@@ -48,7 +48,7 @@ interface Post {
 - [x] База данных: PostgreSQL с PrismaJS
 - [x] API: GraphQL (Code-first)
 - [x] Обернуть весь проект в Docker
-- [ ] Будет плюсом если покрыть юнит тестами модуль Post
+- [x] Будет плюсом если покрыть юнит тестами модуль Post
 
 ## Installation locally
 
