@@ -1,0 +1,88 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreatePostInput {
+  content: String!
+  title: String!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+  role: Role!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  accessToken: String!
+  refreshToken: String!
+  role: Role!
+  userId: Float!
+}
+
+type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
+  createUser(createUserInput: CreateUserInput!): User!
+  login(loginInput: LoginInput!): LoginResponse!
+  logout: Boolean!
+  refreshToken(refreshInput: RefreshInput!): RefreshTokenResponse!
+  removeUser(id: Int!): User!
+  signup(createUserInput: CreateUserInput!): User!
+}
+
+type Post {
+  author: User!
+  content: String!
+  id: Int!
+  title: String!
+  viewers: [Viewers!]
+}
+
+type Query {
+  post(id: Int!): Post!
+  posts(limit: Int! = 3, offset: Int! = 0, startingId: Int = 1): [Post!]!
+  user(id: Int!): User!
+  users(limit: Int! = 3, offset: Int! = 0): [User!]!
+}
+
+input RefreshInput {
+  refreshToken: String!
+}
+
+type RefreshTokenResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+type User {
+  email: String!
+  id: Int!
+  name: String!
+  password: String!
+  posts: [Post!]
+  role: Role!
+  viewedPosts: [ViewedPosts!]
+}
+
+type ViewedPosts {
+  post: Post!
+  postId: Float!
+  userId: Float!
+}
+
+type Viewers {
+  postId: Float!
+  user: User!
+  userId: Float!
+}

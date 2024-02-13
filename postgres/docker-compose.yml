@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  postgres:
+    build: .
+    image: medium_lite_postgres
+    networks:
+    - my_network
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - datapg:/var/lib/postgresql/data
+networks:
+  my_network:
+    driver: bridge
+volumes:
+  datapg:
