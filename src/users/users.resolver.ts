@@ -3,9 +3,9 @@ import { UsersService } from './users.service';
 import { RoleEnum, User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
-import { Roles } from 'src/auth/guard/roles.decorator';
-import { RolesGuard } from 'src/auth/guard/role.guard';
+import { JwtGuard } from '../auth/guard/jwt.guard';
+import { Roles } from '../auth/guard/roles.decorator';
+import { RolesGuard } from '../auth/guard/role.guard';
 import { OffsetPaginationArgs } from './dto/offset-pagination.dto';
 
 @Resolver(() => User)

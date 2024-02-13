@@ -3,7 +3,7 @@ import { PostService } from './post.service';
 import { Post } from './entities/post.entity';
 import { CreatePostInput } from './dto/create-post.input';
 import { UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { JwtGuard } from '../auth/guard/jwt.guard';
 import { CursorPaginationArgs } from './dto/cursore-pagination.dto';
 
 @Resolver(() => Post)

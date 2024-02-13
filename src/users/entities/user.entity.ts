@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
-import { Post } from 'src/post/entities/post.entity';
+import { Post } from '../../post/entities/post.entity';
 
 
 export enum RoleEnum {

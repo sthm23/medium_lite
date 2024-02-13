@@ -56,7 +56,17 @@ interface Post {
 $ npm install
 ```
 
-## Running the postgres docker-container
+## Run project docker container
+
+### you need to create .env file and change DB_HOST to Nest run in docker
+
+```bash
+$ docker-compose up --build
+```
+
+## Running only the postgres docker-container
+
+### you need to create .env file and change DB_HOST to local
 
 ```bash
 # go postgres folder

@@ -8,8 +8,8 @@ import { RefreshJwtGuard } from './guard/jwt-refresh.guard';
 import { JwtGuard } from './guard/jwt.guard';
 import { RefreshTokenResponse } from './entities/refresh.entity';
 import { RefreshInput } from './dto/refreshInput.dto';
-import { User } from 'src/users/entities/user.entity';
-import { CreateUserInput } from 'src/users/dto/create-user.input';
+import { User } from '../users/entities/user.entity';
+import { CreateUserInput } from '../users/dto/create-user.input';
 
 @Resolver()
 export class AuthResolver {

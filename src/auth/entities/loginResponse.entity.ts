@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { RoleEnum } from "src/users/entities/user.entity";
+import { RoleEnum } from "../../users/entities/user.entity";
 
 
 

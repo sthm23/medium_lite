@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
-import { JwtPayload } from 'src/auth/auth.interface';
-import { PrismaService } from 'prisma/prisma.service';
+import { JwtPayload } from '../auth/auth.interface';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CursorPaginationArgs } from './dto/cursore-pagination.dto';
 
 @Injectable()

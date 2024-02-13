@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { LoginInput } from './dto/loginInput.dto';
 import { JwtService } from '@nestjs/jwt';
-import { RoleEnum, User } from 'src/users/entities/user.entity';
-import { CreateUserInput } from 'src/users/dto/create-user.input';
+import { RoleEnum, User } from '../users/entities/user.entity';
+import { CreateUserInput } from '../users/dto/create-user.input';
 
 @Injectable()
 export class AuthService {
